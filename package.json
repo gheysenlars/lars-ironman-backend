@@ -1,0 +1,18 @@
+{
+  "name": "lars-ironman-backend",
+  "version": "1.0.0",
+  "description": "Whoop API backend for Lars's Ironman training app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
