@@ -3,8 +3,13 @@ const cors    = require("cors");
 const axios   = require("axios");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express.json());
+app.options("*", cors());
 
 // ── Config from environment variables (set in Railway dashboard) ──────────────
 const {
