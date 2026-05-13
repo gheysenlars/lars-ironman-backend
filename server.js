@@ -279,13 +279,26 @@ app.get("/", (req, res) => {
 // ── Auto-refresh token every 45 minutes ──────────────────────────────────────
 setInterval(async () => {
   if (tokenStore.refresh_token) {
-    try {
-      await refreshIfNeeded();
-    } catch (e) {
-      console.error("Auto-refresh failed:", e.message);
-    }
+    try { await refreshIfNeeded(); }
+    catch (e) { console.error("Auto-refresh failed:", e.message); }
   }
 }, 45 * 60 * 1000);
+
+// ── Keep-alive ping every 4 minutes (prevents Railway sleep) ─────────────────
+const SELF_URL = process.env.RAILWAY_PUBLIC_DOMAIN
+  ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+  : null;
+
+if (SELF_URL) {
+  setInterval(async () => {
+    try {
+      await axios.get(`${SELF_URL}/`);
+      console.log("✓ Keep-alive ping at", new Date().toISOString());
+    } catch (e) {
+      console.log("Keep-alive failed:", e.message);
+    }
+  }, 4 * 60 * 1000);
+}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
